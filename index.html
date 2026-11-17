@@ -63,7 +63,7 @@ nav a:focus-visible {
     color: #d6ad60;
 }
 
-/* GOLDEN STAGE IMAGE */
+/* ORIGINAL GOLDEN STAGE IMAGE */
 
 .hero {
     width: 100%;
@@ -106,6 +106,27 @@ section p {
     background: #090909;
 }
 
+/* AUDITION REGISTRATION BUTTON */
+
+.register-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 16px 35px;
+    background: #d6ad60;
+    color: #090909;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.register-btn:hover,
+.register-btn:focus-visible {
+    background: #f0d49a;
+    transform: translateY(-2px);
+}
+
 /* FOOTER */
 
 footer {
@@ -120,6 +141,7 @@ footer {
 /* MOBILE RESPONSIVE */
 
 @media (max-width: 600px) {
+
     header {
         flex-direction: column;
         gap: 18px;
@@ -150,6 +172,11 @@ footer {
     section p {
         font-size: 14px;
     }
+
+    .register-btn {
+        font-size: 14px;
+        padding: 14px 25px;
+    }
 }
 </style>
 </head>
@@ -159,30 +186,38 @@ footer {
 <!-- WEBSITE NAVIGATION -->
 
 <header>
-    <div class="logo">THE SAPTAK PROJECT</div>
+
+    <div class="logo">
+        THE SAPTAK PROJECT
+    </div>
 
     <nav aria-label="Main navigation">
         <a href="#home">Home</a>
         <a href="#about">About</a>
-        <a href="#register">Register</a>
+        <a href="register.html">Register</a>
         <a href="#contact">Contact</a>
     </nav>
+
 </header>
 
-<!-- CLEAN GOLDEN STAGE IMAGE -->
-
 <main>
+
+    <!-- ORIGINAL GOLDEN STAGE IMAGE -->
+
     <div class="hero" id="home">
+
         <img
             src="The%20Saptak%20Project_%20Voices%20Become%20Stories.png"
             alt="The Saptak Project - Where Voices Become Stories"
             fetchpriority="high"
         >
+
     </div>
 
     <!-- ABOUT SECTION -->
 
     <section id="about">
+
         <h2>About The Project</h2>
 
         <p>
@@ -191,41 +226,60 @@ footer {
             Every voice has a story.
             It's time to share yours.
         </p>
+
     </section>
 
-    <!-- REGISTRATION SECTION -->
+    <!-- AUDITION REGISTRATION SECTION -->
 
     <section id="register">
+
         <h2>Your Journey Starts Here</h2>
 
         <p>
             Have a passion for singing?
             Get ready to showcase your talent.
-            Registration details coming soon.
+            <br><br>
+            Register for The Saptak Project online auditions.
+            Share your singing audition video link from
+            YouTube, TikTok, Instagram, Facebook,
+            Google Drive or any other supported platform.
+            <br><br>
+            Your voice deserves to be heard.
         </p>
+
+        <a href="register.html" class="register-btn">
+            REGISTER FOR AUDITION
+        </a>
+
     </section>
 
     <!-- CONTACT SECTION -->
 
     <section id="contact">
+
         <h2>Stay Connected</h2>
 
         <p>
-            Follow The Saptak Project for upcoming announcements
-            and competition updates.
+            Follow The Saptak Project for upcoming
+            announcements, audition updates
+            and competition information.
         </p>
+
     </section>
+
 </main>
 
 <!-- FOOTER -->
 
 <footer>
+
     &copy; 2026 The Saptak Project.
     All Rights Reserved.
 
     <br><br>
 
     Where Voices Become Stories.
+
 </footer>
 
 </body>
