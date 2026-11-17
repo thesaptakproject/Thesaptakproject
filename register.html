@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Audition Registration | The Saptak Project</title>
 
 <style>
@@ -14,7 +15,7 @@
 body {
     margin: 0;
     background: #090909;
-    color: white;
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
 
@@ -32,7 +33,7 @@ header h1 {
 }
 
 header p {
-    color: #ddd;
+    color: #dddddd;
     margin: 0;
 }
 
@@ -59,7 +60,7 @@ h2 {
 }
 
 .intro {
-    color: #bbb;
+    color: #bbbbbb;
     text-align: center;
     line-height: 1.7;
 }
@@ -76,8 +77,8 @@ input, select {
     padding: 14px;
     border: 1px solid #5c4724;
     border-radius: 6px;
-    background: #222;
-    color: white;
+    background: #222222;
+    color: #ffffff;
     font-size: 15px;
 }
 
@@ -88,20 +89,21 @@ input:focus, select:focus {
 small {
     display: block;
     margin-top: 8px;
-    color: #aaa;
+    color: #aaaaaa;
     line-height: 1.5;
 }
 
 button {
     width: 100%;
     padding: 16px;
-    margin-top: 30px;
+    margin-top: 25px;
     background: #d6ad60;
     color: #090909;
     border: none;
     border-radius: 6px;
     font-weight: bold;
     font-size: 16px;
+    cursor: pointer;
 }
 
 button:disabled {
@@ -117,13 +119,35 @@ button:disabled {
     line-height: 1.6;
 }
 
+.status {
+    margin-top: 20px;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.status.success {
+    color: #83d8a0;
+}
+
+.status.error {
+    color: #ff9999;
+}
+
+.honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 footer {
     padding: 25px;
-    color: #888;
+    color: #888888;
     text-align: center;
 }
 
-@media(max-width: 600px) {
+@media (max-width: 600px) {
     .container {
         margin: 20px 12px;
         padding: 22px;
@@ -141,45 +165,80 @@ footer {
 <header>
     <h1>THE SAPTAK PROJECT</h1>
     <p>Where Voices Become Stories</p>
-    <a class="back" href="index.html">← Back to Home</a>
+    <a class="back" href="index.html">
+        ← Back to Home
+    </a>
 </header>
 
 <main class="container">
+
     <h2>Online Audition Registration</h2>
 
     <p class="intro">
-        Showcase your singing talent! Complete your
-        details and share a link to your audition video.
+        Showcase your singing talent!
+        Complete your details and share a link
+        to your audition video.
     </p>
 
     <form id="auditionForm">
 
         <label for="name">Full Name *</label>
-        <input id="name" name="name" type="text"
-               autocomplete="name" required
-               placeholder="Enter your full name">
+        <input
+            id="name"
+            name="name"
+            type="text"
+            maxlength="150"
+            autocomplete="name"
+            required
+            placeholder="Enter your full name"
+        >
 
         <label for="age">Age *</label>
-        <input id="age" name="age" type="number"
-               min="1" max="120" required
-               placeholder="Enter your age">
+        <input
+            id="age"
+            name="age"
+            type="number"
+            min="1"
+            max="120"
+            required
+            placeholder="Enter your age"
+        >
 
         <label for="location">City / Country *</label>
-        <input id="location" name="location"
-               type="text" required
-               placeholder="Lahore, Pakistan">
+        <input
+            id="location"
+            name="location"
+            type="text"
+            maxlength="150"
+            required
+            placeholder="Lahore, Pakistan"
+        >
 
         <label for="whatsapp">WhatsApp Number *</label>
-        <input id="whatsapp" name="whatsapp"
-               type="tel" required
-               placeholder="+92 3XX XXXXXXX">
+        <input
+            id="whatsapp"
+            name="whatsapp"
+            type="tel"
+            maxlength="30"
+            required
+            placeholder="+92 3XX XXXXXXX"
+        >
 
         <label for="email">Email Address *</label>
-        <input id="email" name="email"
-               type="email" autocomplete="email" required
-               placeholder="example@gmail.com">
+        <input
+            id="email"
+            name="email"
+            type="email"
+            maxlength="254"
+            autocomplete="email"
+            required
+            placeholder="example@gmail.com"
+        >
 
-        <label for="platform">Audition Video Platform *</label>
+        <label for="platform">
+            Audition Video Platform *
+        </label>
+
         <select id="platform" name="platform" required>
             <option value="">Select platform</option>
             <option value="YouTube">YouTube</option>
@@ -191,33 +250,224 @@ footer {
         </select>
 
         <label for="video">Audition Video Link *</label>
-        <input id="video" name="video"
-               type="url" required
-               placeholder="https://...">
+
+        <input
+            id="video"
+            name="video"
+            type="url"
+            maxlength="2000"
+            required
+            placeholder="https://..."
+        >
 
         <small>
-            Paste a public or accessible video link.
-            Make sure our judges can watch your audition.
-            Do not submit a private or expired link.
+            Paste a public or accessible video link
+            from YouTube, TikTok, Instagram, Facebook,
+            Google Drive or another platform.
+            Make sure our judges can watch it.
         </small>
 
-        <button type="submit" disabled>
-            Submission Coming Soon
+        <div class="honeypot" aria-hidden="true">
+            <label for="website">Leave this field empty</label>
+            <input
+                id="website"
+                name="website"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+            >
+        </div>
+
+        <label for="consent">
+            <input
+                id="consent"
+                type="checkbox"
+                required
+                style="width:auto;margin-right:8px;"
+            >
+            I agree that The Saptak Project may use
+            my submitted details to review and contact
+            me about my audition.
+        </label>
+
+        <button id="submitBtn" type="submit" disabled>
+            Registration Setup In Progress
         </button>
 
-        <p class="notice">
-            Registration submissions are not yet active.
-            The form will be enabled after secure
-            submission storage is connected.
+        <p class="notice" id="notice">
+            Registration will open after secure
+            submission verification is configured.
         </p>
 
+        <p
+            id="status"
+            class="status"
+            role="status"
+            aria-live="polite"
+        ></p>
+
     </form>
+
 </main>
 
 <footer>
     &copy; 2026 The Saptak Project.
     All Rights Reserved.
 </footer>
+
+<script type="module">
+
+import { createClient } from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+/*
+   SUPABASE CONFIGURATION
+   Publishable keys are intended for browser use.
+   Never place a secret/service_role key here.
+*/
+
+const SUPABASE_URL =
+    "https://dqqavhvpluronkxprqwj.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_ZaqZwDAwgjNJRBx-uL6iLQ_xhoTNq29";
+
+/*
+   Keep submissions disabled until a verified
+   server-side anti-spam endpoint is available.
+
+   A honeypot alone does not prevent automated
+   abuse of a public INSERT endpoint.
+*/
+
+const REGISTRATION_ENABLED = false;
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const form = document.getElementById("auditionForm");
+const submitBtn = document.getElementById("submitBtn");
+const status = document.getElementById("status");
+const notice = document.getElementById("notice");
+
+if (REGISTRATION_ENABLED) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Audition";
+    notice.textContent =
+        "Please submit only one genuine audition.";
+}
+
+form.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    if (!REGISTRATION_ENABLED) {
+        status.className = "status error";
+        status.textContent =
+            "Registration is not open yet.";
+        return;
+    }
+
+    if (!form.reportValidity()) {
+        return;
+    }
+
+    if (document.getElementById("website").value) {
+        return;
+    }
+
+    const videoLink =
+        document.getElementById("video").value.trim();
+
+    let parsedUrl;
+
+    try {
+        parsedUrl = new URL(videoLink);
+
+        if (
+            parsedUrl.protocol !== "https:" &&
+            parsedUrl.protocol !== "http:"
+        ) {
+            throw new Error("Invalid protocol");
+        }
+    } catch {
+        status.className = "status error";
+        status.textContent =
+            "Please enter a valid audition video URL.";
+        return;
+    }
+
+    const registration = {
+        full_name:
+            document.getElementById("name").value.trim(),
+
+        age:
+            Number(document.getElementById("age").value),
+
+        city_country:
+            document.getElementById("location").value.trim(),
+
+        whatsapp_number:
+            document.getElementById("whatsapp").value.trim(),
+
+        email:
+            document.getElementById("email").value.trim(),
+
+        video_platform:
+            document.getElementById("platform").value,
+
+        video_link:
+            parsedUrl.href
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    status.className = "status";
+    status.textContent = "";
+
+    try {
+
+        /*
+          Temporary database integration.
+          Production submissions should pass through
+          a protected server-side verification endpoint.
+        */
+
+        const { error } = await supabase
+            .from("auditions")
+            .insert(registration);
+
+        if (error) {
+            throw error;
+        }
+
+        status.className = "status success";
+        status.textContent =
+            "Your audition registration has been submitted successfully!";
+
+        form.reset();
+
+    } catch (error) {
+
+        console.error("Audition submission failed:", error);
+
+        status.className = "status error";
+        status.textContent =
+            "Registration could not be submitted. Please try again later.";
+
+    } finally {
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Audition";
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
