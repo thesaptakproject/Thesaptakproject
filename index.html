@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>The Saptak Project | Where Voices Become Stories</title>
 
 <style>
@@ -19,17 +20,19 @@ html {
 
 body {
     background: #090909;
-    color: #fff;
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
+
+/* HEADER */
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 25px 8%;
-    border-bottom: 1px solid #302817;
     background: #090909;
+    border-bottom: 1px solid #302817;
 }
 
 .logo {
@@ -39,81 +42,39 @@ header {
     letter-spacing: 2px;
 }
 
+nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
 nav a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
-    margin-left: 25px;
     font-size: 14px;
+    transition: color 0.3s;
 }
 
 nav a:hover {
     color: #d6ad60;
 }
 
-.hero {
-    min-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 20px;
+/* HERO IMAGE */
 
-    background:
-        linear-gradient(
-            rgba(0,0,0,0.40),
-            rgba(0,0,0,0.72)
-        ),
+.hero {
+    width: 100%;
+    aspect-ratio: 1648 / 928;
+
+    background-image:
         url("The%20Saptak%20Project_%20Voices%20Become%20Stories.png");
 
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.hero .tag {
-    color: #f0d49a;
-    letter-spacing: 5px;
-    font-size: 12px;
-    margin-bottom: 25px;
-}
-
-.hero h1 {
-    font-size: clamp(35px, 8vw, 85px);
-    color: #e5c17c;
-    letter-spacing: 5px;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 15px #000;
-}
-
-.hero h2 {
-    font-size: clamp(18px, 3vw, 28px);
-    font-weight: normal;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 10px #000;
-}
-
-.hero p {
-    color: #eee;
-    font-size: 16px;
-    margin-bottom: 35px;
-    line-height: 1.7;
-    text-shadow: 2px 2px 8px #000;
-}
-
-.btn {
-    display: inline-block;
-    background: #d6ad60;
-    color: #090909;
-    padding: 15px 35px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 3px;
-}
-
-.btn:hover {
-    background: #f0d49a;
-}
+/* CONTENT SECTIONS */
 
 section {
     padding: 80px 8%;
@@ -127,43 +88,91 @@ section h2 {
 }
 
 section p {
-    color: #bbb;
+    color: #bbbbbb;
     line-height: 1.8;
     max-width: 700px;
-    margin: auto;
+    margin: 0 auto;
+    font-size: 16px;
 }
+
+#about {
+    background: #101010;
+}
+
+#register {
+    background: #090909;
+}
+
+#contact {
+    background: #101010;
+}
+
+/* FOOTER */
 
 footer {
     text-align: center;
-    padding: 30px;
+    padding: 30px 15px;
     border-top: 1px solid #302817;
-    color: #888;
+    color: #888888;
     font-size: 13px;
+    line-height: 1.8;
 }
 
-@media(max-width: 600px) {
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 600px) {
+
     header {
         flex-direction: column;
         gap: 20px;
+        padding: 20px 5%;
+    }
+
+    .logo {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 15px;
     }
 
     nav a {
-        margin: 0 7px;
         font-size: 12px;
     }
 
     .hero {
-        min-height: 75vh;
-        background-position: center;
+        width: 100%;
+        aspect-ratio: 1648 / 928;
+        background-size: 100% 100%;
+    }
+
+    section {
+        padding: 60px 6%;
+    }
+
+    section h2 {
+        font-size: 26px;
+    }
+
+    section p {
+        font-size: 14px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- NAVIGATION HEADER -->
+
 <header>
-    <div class="logo">THE SAPTAK PROJECT</div>
+
+    <div class="logo">
+        THE SAPTAK PROJECT
+    </div>
 
     <nav>
         <a href="#home">Home</a>
@@ -171,53 +180,70 @@ footer {
         <a href="#register">Register</a>
         <a href="#contact">Contact</a>
     </nav>
+
 </header>
 
-<div class="hero" id="home">
-    <div class="tag">A CELEBRATION OF MUSIC & TALENT</div>
+<!-- ORIGINAL GOLDEN STAGE IMAGE -->
+<!-- No duplicate headings or buttons -->
 
-    <h1>THE SAPTAK PROJECT</h1>
-
-    <h2>Where Voices Become Stories.</h2>
-
-    <p>
-        Discover voices. Celebrate talent. Share stories.<br>
-        Your voice deserves to be heard.
-    </p>
-
-    <a href="#register" class="btn">REGISTER NOW</a>
+<div class="hero" id="home"
+     role="img"
+     aria-label="The Saptak Project golden music stage poster">
 </div>
 
+<!-- ABOUT SECTION -->
+
 <section id="about">
+
     <h2>About The Project</h2>
+
     <p>
         The Saptak Project is a platform to discover,
         celebrate and showcase extraordinary singing talent.
-        Every voice has a story. It's time to share yours.
+        Every voice has a story.
+        It's time to share yours.
     </p>
+
 </section>
 
+<!-- REGISTRATION SECTION -->
+
 <section id="register">
+
     <h2>Your Journey Starts Here</h2>
+
     <p>
         Have a passion for singing?
         Get ready to showcase your talent.
         Registration details coming soon.
     </p>
+
 </section>
 
+<!-- CONTACT SECTION -->
+
 <section id="contact">
+
     <h2>Stay Connected</h2>
+
     <p>
         Follow The Saptak Project for upcoming announcements
         and competition updates.
     </p>
+
 </section>
 
+<!-- FOOTER -->
+
 <footer>
-    © 2026 The Saptak Project. All Rights Reserved.
+
+    &copy; 2026 The Saptak Project.
+    All Rights Reserved.
+
     <br><br>
+
     Where Voices Become Stories.
+
 </footer>
 
 </body>
