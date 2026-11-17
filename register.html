@@ -8,9 +8,9 @@
 <title>Audition Registration | The Saptak Project</title>
 
 <script
-  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-  async
-  defer>
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer>
 </script>
 
 <style>
@@ -21,7 +21,7 @@
 body {
     margin: 0;
     background: #090909;
-    color: white;
+    color: #ffffff;
     font-family: Arial, sans-serif;
 }
 
@@ -39,7 +39,7 @@ header h1 {
 }
 
 header p {
-    color: #ddd;
+    color: #dddddd;
     margin: 0;
 }
 
@@ -66,7 +66,7 @@ h2 {
 }
 
 .intro {
-    color: #bbb;
+    color: #bbbbbb;
     text-align: center;
     line-height: 1.7;
 }
@@ -83,8 +83,8 @@ input, select {
     padding: 14px;
     border: 1px solid #5c4724;
     border-radius: 6px;
-    background: #222;
-    color: white;
+    background: #222222;
+    color: #ffffff;
     font-size: 15px;
 }
 
@@ -95,21 +95,15 @@ input:focus, select:focus {
 small {
     display: block;
     margin-top: 8px;
-    color: #aaa;
+    color: #aaaaaa;
     line-height: 1.5;
-}
-
-.captcha-box {
-    margin-top: 28px;
-    display: flex;
-    justify-content: center;
 }
 
 .consent-label {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    color: #ddd;
+    color: #dddddd;
     font-size: 13px;
     font-weight: normal;
     line-height: 1.6;
@@ -119,6 +113,12 @@ small {
     width: auto;
     margin: 3px 0 0;
     flex-shrink: 0;
+}
+
+.captcha-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
 }
 
 button {
@@ -163,11 +163,11 @@ button:disabled {
 
 footer {
     padding: 25px;
-    color: #888;
+    color: #888888;
     text-align: center;
 }
 
-@media(max-width: 600px) {
+@media (max-width: 600px) {
     .container {
         margin: 20px 12px;
         padding: 22px;
@@ -301,11 +301,11 @@ footer {
             </span>
         </label>
 
-        <!-- Cloudflare Turnstile CAPTCHA -->
+        <!-- Cloudflare Turnstile -->
         <div class="captcha-box">
             <div
                 class="cf-turnstile"
-                data-sitekey="0x4AAAAAAGEjpV9O7dOFJ5uG_0xWN86zYFE"
+                data-sitekey="0x4AAAAAAGEjpfuhio5quXx7"
                 data-theme="dark"
             ></div>
         </div>
@@ -316,8 +316,8 @@ footer {
 
         <p class="notice">
             Please submit only one genuine audition.
-            Your details will be used for audition review
-            and communication.
+            Your information will be used for audition
+            review and communication.
         </p>
 
         <p
@@ -337,7 +337,6 @@ footer {
 </footer>
 
 <script>
-
 const FUNCTION_URL =
     "https://dqqavhvpluronkxprqwj.supabase.co/functions/v1/submit-audition";
 
@@ -348,8 +347,12 @@ const form = document.getElementById("auditionForm");
 const submitBtn = document.getElementById("submitBtn");
 const statusMessage = document.getElementById("status");
 
-form.addEventListener("submit", async function(event) {
+function showError(message) {
+    statusMessage.className = "status error";
+    statusMessage.textContent = message;
+}
 
+form.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     if (!form.reportValidity()) {
@@ -358,7 +361,7 @@ form.addEventListener("submit", async function(event) {
 
     if (!window.turnstile) {
         showError(
-            "CAPTCHA is still loading. Please wait."
+            "CAPTCHA is loading. Please wait and try again."
         );
         return;
     }
@@ -367,7 +370,7 @@ form.addEventListener("submit", async function(event) {
 
     if (!token) {
         showError(
-            "Please complete the CAPTCHA verification."
+            "Please complete CAPTCHA verification."
         );
         return;
     }
@@ -385,7 +388,6 @@ form.addEventListener("submit", async function(event) {
         ) {
             throw new Error("Invalid URL");
         }
-
     } catch {
         showError(
             "Please enter a valid audition video link."
@@ -394,7 +396,6 @@ form.addEventListener("submit", async function(event) {
     }
 
     const registration = {
-
         full_name:
             document.getElementById("name").value.trim(),
 
@@ -423,22 +424,17 @@ form.addEventListener("submit", async function(event) {
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
 
-    statusMessage.textContent = "";
     statusMessage.className = "status";
+    statusMessage.textContent = "";
 
     try {
-
         const response = await fetch(FUNCTION_URL, {
-
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json",
                 "apikey": PUBLISHABLE_KEY,
-                "Authorization":
-                    "Bearer " + PUBLISHABLE_KEY
+                "Authorization": "Bearer " + PUBLISHABLE_KEY
             },
-
             body: JSON.stringify(registration)
         });
 
@@ -446,13 +442,11 @@ form.addEventListener("submit", async function(event) {
 
         if (!response.ok || result.success !== true) {
             throw new Error(
-                result.error ||
-                "Unable to submit registration."
+                result.error || "Submission failed"
             );
         }
 
         statusMessage.className = "status success";
-
         statusMessage.textContent =
             "Congratulations! Your audition registration " +
             "has been submitted successfully.";
@@ -460,32 +454,21 @@ form.addEventListener("submit", async function(event) {
         form.reset();
 
     } catch (error) {
-
         console.error("Submission error:", error);
 
         showError(
-            "Submission failed. Please try again. " +
-            "If the problem continues, contact our team."
+            "Submission failed. Please try again later."
         );
 
     } finally {
-
         if (window.turnstile) {
             window.turnstile.reset();
         }
 
         submitBtn.disabled = false;
         submitBtn.textContent = "Submit Audition";
-
     }
-
 });
-
-function showError(message) {
-    statusMessage.className = "status error";
-    statusMessage.textContent = message;
-}
-
 </script>
 
 </body>
