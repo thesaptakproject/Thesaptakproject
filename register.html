@@ -99,6 +99,17 @@ small {
     line-height: 1.5;
 }
 
+.video-notice {
+    margin-top: 25px;
+    padding: 16px;
+    background: #211b12;
+    border: 1px solid #5c4724;
+    border-radius: 8px;
+    color: #e5c17c;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
 .consent-label {
     display: flex;
     align-items: flex-start;
@@ -192,12 +203,14 @@ footer {
 
 <main class="container">
 
-    <h2>Online Audition Registration</h2>
+    <h2>Audition Registration</h2>
 
     <p class="intro">
         Showcase your singing talent!
-        Complete your details and share a link
-        to your audition video.
+        Complete your registration details.
+        You can share an audition video if you have one.
+        If you do not have a video, you can still register
+        for a live audition.
     </p>
 
     <form id="auditionForm">
@@ -255,12 +268,19 @@ footer {
             placeholder="example@gmail.com"
         >
 
+        <div class="video-notice">
+            🎤 <strong>Don't have an audition video?</strong>
+            No problem! Video submission is optional.
+            Leave both video fields empty and our team
+            can contact you about a live audition.
+        </div>
+
         <label for="platform">
-            Audition Video Platform *
+            Audition Video Platform (Optional)
         </label>
 
-        <select id="platform" name="platform" required>
-            <option value="">Select platform</option>
+        <select id="platform" name="platform">
+            <option value="">No video / Live audition</option>
             <option value="YouTube">YouTube</option>
             <option value="TikTok">TikTok</option>
             <option value="Instagram">Instagram</option>
@@ -270,7 +290,7 @@ footer {
         </select>
 
         <label for="video">
-            Audition Video Link *
+            Audition Video Link (Optional)
         </label>
 
         <input
@@ -278,14 +298,13 @@ footer {
             name="video"
             type="url"
             maxlength="2000"
-            required
             placeholder="https://..."
         >
 
         <small>
-            Paste a public or accessible video link.
-            Make sure our judges can watch your audition.
-            Do not submit a private or expired link.
+            If you have a video, select its platform
+            and paste an accessible link.
+            Otherwise, leave both fields empty.
         </small>
 
         <label class="consent-label">
@@ -375,24 +394,47 @@ form.addEventListener("submit", async function(event) {
         return;
     }
 
-    let videoUrl;
+    const platform =
+        document.getElementById("platform").value;
 
-    try {
-        videoUrl = new URL(
-            document.getElementById("video").value.trim()
-        );
+    const videoInput =
+        document.getElementById("video").value.trim();
 
-        if (
-            videoUrl.protocol !== "https:" &&
-            videoUrl.protocol !== "http:"
-        ) {
-            throw new Error("Invalid URL");
+    let videoLink = null;
+    let videoPlatform = null;
+
+    // Video is optional, but both fields must be
+    // provided together if a video is submitted.
+    if (platform || videoInput) {
+
+        if (!platform || !videoInput) {
+            showError(
+                "Please provide both the video platform " +
+                "and video link, or leave both empty " +
+                "for a live audition."
+            );
+            return;
         }
-    } catch {
-        showError(
-            "Please enter a valid audition video link."
-        );
-        return;
+
+        try {
+            const videoUrl = new URL(videoInput);
+
+            if (
+                videoUrl.protocol !== "https:" &&
+                videoUrl.protocol !== "http:"
+            ) {
+                throw new Error("Invalid URL");
+            }
+
+            videoLink = videoUrl.href;
+            videoPlatform = platform;
+
+        } catch {
+            showError(
+                "Please enter a valid audition video link."
+            );
+            return;
+        }
     }
 
     const registration = {
@@ -411,14 +453,11 @@ form.addEventListener("submit", async function(event) {
         email:
             document.getElementById("email").value.trim(),
 
-        video_platform:
-            document.getElementById("platform").value,
+        video_platform: videoPlatform,
 
-        video_link:
-            videoUrl.href,
+        video_link: videoLink,
 
-        turnstile_token:
-            token
+        turnstile_token: token
     };
 
     submitBtn.disabled = true;
@@ -447,9 +486,12 @@ form.addEventListener("submit", async function(event) {
         }
 
         statusMessage.className = "status success";
+
         statusMessage.textContent =
             "Congratulations! Your audition registration " +
-            "has been submitted successfully.";
+            "has been submitted successfully. " +
+            "Our team will contact you regarding " +
+            "the next audition steps.";
 
         form.reset();
 
