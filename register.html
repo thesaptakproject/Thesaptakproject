@@ -7,6 +7,12 @@
 
 <title>Audition Registration | The Saptak Project</title>
 
+<script
+  src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+  async
+  defer>
+</script>
+
 <style>
 * {
     box-sizing: border-box;
@@ -15,7 +21,7 @@
 body {
     margin: 0;
     background: #090909;
-    color: #ffffff;
+    color: white;
     font-family: Arial, sans-serif;
 }
 
@@ -33,7 +39,7 @@ header h1 {
 }
 
 header p {
-    color: #dddddd;
+    color: #ddd;
     margin: 0;
 }
 
@@ -60,7 +66,7 @@ h2 {
 }
 
 .intro {
-    color: #bbbbbb;
+    color: #bbb;
     text-align: center;
     line-height: 1.7;
 }
@@ -77,8 +83,8 @@ input, select {
     padding: 14px;
     border: 1px solid #5c4724;
     border-radius: 6px;
-    background: #222222;
-    color: #ffffff;
+    background: #222;
+    color: white;
     font-size: 15px;
 }
 
@@ -89,8 +95,30 @@ input:focus, select:focus {
 small {
     display: block;
     margin-top: 8px;
-    color: #aaaaaa;
+    color: #aaa;
     line-height: 1.5;
+}
+
+.captcha-box {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+}
+
+.consent-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #ddd;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 1.6;
+}
+
+.consent-label input {
+    width: auto;
+    margin: 3px 0 0;
+    flex-shrink: 0;
 }
 
 button {
@@ -133,21 +161,13 @@ button:disabled {
     color: #ff9999;
 }
 
-.honeypot {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-}
-
 footer {
     padding: 25px;
-    color: #888888;
+    color: #888;
     text-align: center;
 }
 
-@media (max-width: 600px) {
+@media(max-width: 600px) {
     .container {
         margin: 20px 12px;
         padding: 22px;
@@ -249,7 +269,9 @@ footer {
             <option value="Other">Other Platform</option>
         </select>
 
-        <label for="video">Audition Video Link *</label>
+        <label for="video">
+            Audition Video Link *
+        </label>
 
         <input
             id="video"
@@ -261,42 +283,41 @@ footer {
         >
 
         <small>
-            Paste a public or accessible video link
-            from YouTube, TikTok, Instagram, Facebook,
-            Google Drive or another platform.
-            Make sure our judges can watch it.
+            Paste a public or accessible video link.
+            Make sure our judges can watch your audition.
+            Do not submit a private or expired link.
         </small>
 
-        <div class="honeypot" aria-hidden="true">
-            <label for="website">Leave this field empty</label>
-            <input
-                id="website"
-                name="website"
-                type="text"
-                tabindex="-1"
-                autocomplete="off"
-            >
-        </div>
-
-        <label for="consent">
+        <label class="consent-label">
             <input
                 id="consent"
                 type="checkbox"
                 required
-                style="width:auto;margin-right:8px;"
             >
-            I agree that The Saptak Project may use
-            my submitted details to review and contact
-            me about my audition.
+            <span>
+                I agree that The Saptak Project may
+                use my submitted details to review
+                and contact me about my audition.
+            </span>
         </label>
 
-        <button id="submitBtn" type="submit" disabled>
-            Registration Setup In Progress
+        <!-- Cloudflare Turnstile CAPTCHA -->
+        <div class="captcha-box">
+            <div
+                class="cf-turnstile"
+                data-sitekey="0x4AAAAAAGEjpV9O7dOFJ5uG_0xWN86zYFE"
+                data-theme="dark"
+            ></div>
+        </div>
+
+        <button id="submitBtn" type="submit">
+            Submit Audition
         </button>
 
-        <p class="notice" id="notice">
-            Registration will open after secure
-            submission verification is configured.
+        <p class="notice">
+            Please submit only one genuine audition.
+            Your details will be used for audition review
+            and communication.
         </p>
 
         <p
@@ -315,91 +336,65 @@ footer {
     All Rights Reserved.
 </footer>
 
-<script type="module">
+<script>
 
-import { createClient } from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+const FUNCTION_URL =
+    "https://dqqavhvpluronkxprqwj.supabase.co/functions/v1/submit-audition";
 
-/*
-   SUPABASE CONFIGURATION
-   Publishable keys are intended for browser use.
-   Never place a secret/service_role key here.
-*/
-
-const SUPABASE_URL =
-    "https://dqqavhvpluronkxprqwj.supabase.co";
-
-const SUPABASE_KEY =
+const PUBLISHABLE_KEY =
     "sb_publishable_ZaqZwDAwgjNJRBx-uL6iLQ_xhoTNq29";
-
-/*
-   Keep submissions disabled until a verified
-   server-side anti-spam endpoint is available.
-
-   A honeypot alone does not prevent automated
-   abuse of a public INSERT endpoint.
-*/
-
-const REGISTRATION_ENABLED = false;
-
-const supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
 
 const form = document.getElementById("auditionForm");
 const submitBtn = document.getElementById("submitBtn");
-const status = document.getElementById("status");
-const notice = document.getElementById("notice");
-
-if (REGISTRATION_ENABLED) {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Audition";
-    notice.textContent =
-        "Please submit only one genuine audition.";
-}
+const statusMessage = document.getElementById("status");
 
 form.addEventListener("submit", async function(event) {
 
     event.preventDefault();
 
-    if (!REGISTRATION_ENABLED) {
-        status.className = "status error";
-        status.textContent =
-            "Registration is not open yet.";
-        return;
-    }
-
     if (!form.reportValidity()) {
         return;
     }
 
-    if (document.getElementById("website").value) {
+    if (!window.turnstile) {
+        showError(
+            "CAPTCHA is still loading. Please wait."
+        );
         return;
     }
 
-    const videoLink =
-        document.getElementById("video").value.trim();
+    const token = window.turnstile.getResponse();
 
-    let parsedUrl;
+    if (!token) {
+        showError(
+            "Please complete the CAPTCHA verification."
+        );
+        return;
+    }
+
+    let videoUrl;
 
     try {
-        parsedUrl = new URL(videoLink);
+        videoUrl = new URL(
+            document.getElementById("video").value.trim()
+        );
 
         if (
-            parsedUrl.protocol !== "https:" &&
-            parsedUrl.protocol !== "http:"
+            videoUrl.protocol !== "https:" &&
+            videoUrl.protocol !== "http:"
         ) {
-            throw new Error("Invalid protocol");
+            throw new Error("Invalid URL");
         }
+
     } catch {
-        status.className = "status error";
-        status.textContent =
-            "Please enter a valid audition video URL.";
+        showError(
+            "Please enter a valid audition video link."
+        );
         return;
     }
 
     const registration = {
+
         full_name:
             document.getElementById("name").value.trim(),
 
@@ -419,46 +414,65 @@ form.addEventListener("submit", async function(event) {
             document.getElementById("platform").value,
 
         video_link:
-            parsedUrl.href
+            videoUrl.href,
+
+        turnstile_token:
+            token
     };
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Submitting...";
 
-    status.className = "status";
-    status.textContent = "";
+    statusMessage.textContent = "";
+    statusMessage.className = "status";
 
     try {
 
-        /*
-          Temporary database integration.
-          Production submissions should pass through
-          a protected server-side verification endpoint.
-        */
+        const response = await fetch(FUNCTION_URL, {
 
-        const { error } = await supabase
-            .from("auditions")
-            .insert(registration);
+            method: "POST",
 
-        if (error) {
-            throw error;
+            headers: {
+                "Content-Type": "application/json",
+                "apikey": PUBLISHABLE_KEY,
+                "Authorization":
+                    "Bearer " + PUBLISHABLE_KEY
+            },
+
+            body: JSON.stringify(registration)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || result.success !== true) {
+            throw new Error(
+                result.error ||
+                "Unable to submit registration."
+            );
         }
 
-        status.className = "status success";
-        status.textContent =
-            "Your audition registration has been submitted successfully!";
+        statusMessage.className = "status success";
+
+        statusMessage.textContent =
+            "Congratulations! Your audition registration " +
+            "has been submitted successfully.";
 
         form.reset();
 
     } catch (error) {
 
-        console.error("Audition submission failed:", error);
+        console.error("Submission error:", error);
 
-        status.className = "status error";
-        status.textContent =
-            "Registration could not be submitted. Please try again later.";
+        showError(
+            "Submission failed. Please try again. " +
+            "If the problem continues, contact our team."
+        );
 
     } finally {
+
+        if (window.turnstile) {
+            window.turnstile.reset();
+        }
 
         submitBtn.disabled = false;
         submitBtn.textContent = "Submit Audition";
@@ -466,6 +480,11 @@ form.addEventListener("submit", async function(event) {
     }
 
 });
+
+function showError(message) {
+    statusMessage.className = "status error";
+    statusMessage.textContent = message;
+}
 
 </script>
 
